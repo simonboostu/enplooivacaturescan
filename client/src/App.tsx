@@ -6,6 +6,9 @@ import ResultPanel from './components/ResultPanel';
 import { AnalysisResult, AppState, AppConfig } from './types';
 import { useTheme } from './lib/theme';
 
+// Utility function to generate test IDs
+const generateTestId = () => `test-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
 const App: React.FC = () => {
   const [state, setState] = useState<AppState>('idle');
   const [currentResult, setCurrentResult] = useState<AnalysisResult | null>(null);
@@ -177,6 +180,67 @@ const App: React.FC = () => {
     return () => document.removeEventListener('contextmenu', preventContextMenu);
   }, []);
 
+  // Hidden keystroke combination to trigger test webhook (Ctrl+Shift+T)
+  useEffect(() => {
+    const handleKeyDown = async (e: KeyboardEvent) => {
+      // Check for Ctrl+Shift+T combination
+      if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 't') {
+        e.preventDefault();
+        console.log('Test webhook triggered via keystroke combination');
+        
+        // Create test data
+        const testResult: AnalysisResult = {
+          id: generateTestId(),
+          companyName: 'Demo Bedrijf',
+          vacancyTitle: 'Software Developer',
+          idealCandidateImageUrl: 'https://via.placeholder.com/400x300/2563eb/ffffff?text=Ideal+Candidate',
+          tips: [
+            'Tip 1: Voeg specifieke technische vaardigheden toe',
+            'Tip 2: Beschrijf de bedrijfscultuur en waarden',
+            'Tip 3: Vermeld salaris en secundaire arbeidsvoorwaarden',
+            'Tip 4: Specificeer thuiswerk en flexibele werktijden'
+          ],
+          timestamp: new Date(),
+          meta: {
+            source: 'test-keystroke',
+            analysisId: 'test-' + Date.now(),
+            submittedAt: new Date().toISOString(),
+          },
+        };
+
+        // Simulate receiving the result
+        handleNewAnalysis(testResult);
+        
+        // Show a brief notification
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+          position: fixed;
+          top: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: #10b981;
+          color: white;
+          padding: 12px 24px;
+          border-radius: 8px;
+          font-size: 16px;
+          font-weight: 600;
+          z-index: 9999;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        `;
+        notification.textContent = '🧪 Test resultaat getriggerd!';
+        document.body.appendChild(notification);
+        
+        // Remove notification after 3 seconds
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 3000);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [handleNewAnalysis]);
+
   return (
     <div className="h-screen w-screen overflow-hidden">
       {/* Connection Status Indicator */}
@@ -196,6 +260,13 @@ const App: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Hidden Test Indicator - Only visible on hover */}
+      <div className="absolute bottom-4 right-4 z-50 opacity-0 hover:opacity-100 transition-opacity duration-300">
+        <div className="bg-gray-800 text-white px-3 py-2 rounded-lg text-xs font-mono">
+          <div className="text-gray-300">Test: Ctrl+Shift+T</div>
+        </div>
+      </div>
 
       {/* Main Content */}
       <AnimatePresence mode="wait">
