@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enplooi Vacaturescan</title>
+    <meta name="description" content="Gratis vacaturescan - krijg direct tips voor je vacature" />
+    
+    <!-- Prevent context menu and text selection for kiosk mode -->
+    <style>
+      * {
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+      }
+      
+      body {
+        cursor: none;
+        overflow: hidden;
+      }
+      
+      /* Show cursor briefly on interaction */
+      body:hover {
+        cursor: default;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

@@ -1,0 +1,108 @@
+import React from 'react';
+import { QRCodeSVG } from 'qrcode.react';
+import { motion } from 'framer-motion';
+
+interface QRPanelProps {
+  typeformUrl: string;
+  kioskTitle: string;
+}
+
+const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-brand-bg to-gray-50 px-12"
+      style={{ minHeight: '1920px', minWidth: '1080px' }}
+    >
+      {/* Main Content - Optimized for vertical layout */}
+      <div className="text-center max-w-5xl w-full">
+        {/* Title - Much larger for kiosk display */}
+        <motion.h1
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="text-8xl lg:text-9xl font-bold text-brand-text mb-12 leading-tight"
+        >
+          {kioskTitle}
+        </motion.h1>
+        
+        {/* Subtitle - Larger and more spaced */}
+        <motion.p
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="text-4xl lg:text-5xl text-gray-600 mb-20 max-w-4xl mx-auto leading-relaxed"
+        >
+          Scan de QR, vul kort je vacature in, wij tonen hier meteen 4 tips. 
+          De volledige analyse ontvang je via e-mail.
+        </motion.p>
+        
+        {/* QR Code - Much larger for visibility */}
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+          className="mb-20"
+        >
+          <div className="relative inline-block">
+            {/* Pulsing border - thicker for kiosk */}
+            <div className="absolute inset-0 rounded-4xl border-8 border-brand-accent animate-pulse-slow"></div>
+            
+            {/* QR Code - Larger size */}
+            <div className="bg-white p-8 rounded-4xl shadow-2xl">
+              <QRCodeSVG
+                value={typeformUrl}
+                size={480}
+                level="M"
+                includeMargin={true}
+                className="rounded-3xl"
+              />
+            </div>
+          </div>
+        </motion.div>
+        
+        {/* Instructions - Larger text */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+          className="text-3xl text-gray-500 mb-24"
+        >
+          <p className="font-semibold mb-4">📱 Scan met je telefoon</p>
+          <p className="text-2xl">Vul het formulier in en zie hier direct je resultaat</p>
+        </motion.div>
+      </div>
+      
+      {/* Footer - Larger and more prominent */}
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 1, duration: 0.6 }}
+        className="absolute bottom-16 left-0 right-0 flex items-center justify-between px-16"
+      >
+        {/* Enplooi Logo - Larger */}
+        <div className="flex items-center space-x-6">
+          <div className="w-20 h-20 bg-brand-primary rounded-xl flex items-center justify-center">
+            <span className="text-white font-bold text-3xl">E</span>
+          </div>
+          <div>
+            <div className="text-3xl font-bold text-brand-text">enplooi</div>
+            <div className="text-xl text-gray-500">Vacature experts</div>
+          </div>
+        </div>
+        
+        {/* Social Proof - Larger */}
+        <div className="text-right">
+          <div className="text-2xl text-gray-500">
+            Al meer dan <span className="font-semibold text-brand-primary">10.000</span> vacatures geoptimaliseerd
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+export default QRPanel;

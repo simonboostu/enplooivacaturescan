@@ -1,0 +1,27 @@
+{
+  "name": "enplooi-vacature-scanner",
+  "version": "1.0.0",
+  "description": "Kiosk app for displaying vacancy analysis results",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\"",
+    "build": "cd client && npm run build && cd ../server && npm run build",
+    "start": "node server/dist/index.js",
+    "lint": "cd client && npm run lint && cd ../server && npm run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "type-check": "cd client && npm run type-check && cd ../server && npm run type-check"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "prettier": "^3.1.0",
+    "@types/node": "^20.10.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}
