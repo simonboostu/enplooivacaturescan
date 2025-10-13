@@ -10,21 +10,6 @@ interface ResultPanelProps {
 
 const ResultPanel: React.FC<ResultPanelProps> = ({ result, displaySeconds, onComplete }) => {
   const [imageError, setImageError] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(displaySeconds);
-
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          onComplete();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [onComplete]);
 
   const formatTimestamp = (date: Date) => {
     return new Intl.DateTimeFormat('nl-NL', {
@@ -56,9 +41,14 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, displaySeconds, onCom
             <div className="text-2xl text-gray-500">
               {formatTimestamp(result.timestamp)}
             </div>
-            <div className="text-3xl text-gray-500 font-semibold">
-              {timeLeft}s
-            </div>
+            <motion.button
+              onClick={onComplete}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-brand-primary hover:bg-brand-primary/90 text-white px-8 py-4 rounded-2xl text-2xl font-semibold shadow-lg transition-colors duration-200"
+            >
+              🏠 Terug naar start
+            </motion.button>
           </div>
           
           <h1 className="text-7xl lg:text-8xl font-bold text-brand-text mb-6 leading-tight">
@@ -159,52 +149,28 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, displaySeconds, onCom
           </div>
         </motion.div>
 
-        {/* Progress Bar - Larger */}
+        {/* Footer with Back Button - Larger */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
-          className="mb-8"
+          className="text-center"
         >
-          <ProgressBar 
-            total={displaySeconds} 
-            remaining={timeLeft} 
-          />
-        </motion.div>
-
-        {/* Footer - Larger */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4 }}
-          className="text-center text-gray-500"
-        >
-          <p className="text-2xl">
+          <p className="text-2xl text-gray-500 mb-8">
             De volledige analyse met gedetailleerde tips ontvang je via e-mail
           </p>
+          
+          <motion.button
+            onClick={onComplete}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-brand-accent hover:bg-brand-accent/90 text-white px-12 py-6 rounded-3xl text-3xl font-bold shadow-xl transition-colors duration-200"
+          >
+            🏠 Terug naar QR code
+          </motion.button>
         </motion.div>
       </div>
     </motion.div>
-  );
-};
-
-interface ProgressBarProps {
-  total: number;
-  remaining: number;
-}
-
-const ProgressBar: React.FC<ProgressBarProps> = ({ total, remaining }) => {
-  const progress = ((total - remaining) / total) * 100;
-
-  return (
-    <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-      <motion.div
-        className="h-full bg-gradient-to-r from-brand-primary to-brand-accent rounded-full"
-        initial={{ width: 0 }}
-        animate={{ width: `${progress}%` }}
-        transition={{ duration: 0.3 }}
-      />
-    </div>
   );
 };
 
