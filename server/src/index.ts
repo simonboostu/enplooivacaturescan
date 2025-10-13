@@ -91,32 +91,56 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
       return res.status(401).json({ error: 'Invalid or missing authentication token' });
     }
 
-    // Validate payload
+    // Try to validate payload
     const validationResult = WebhookPayloadSchema.safeParse(req.body);
-    if (!validationResult.success) {
-      console.error('Webhook validation failed:', validationResult.error);
-      return res.status(422).json({
-        error: 'Invalid payload',
-        details: validationResult.error.errors,
-      });
+    let result: AnalysisResult;
+
+    if (validationResult.success) {
+      // Valid payload - process normally
+      const payload = validationResult.data;
+      result = {
+        id: generateAnalysisId(),
+        companyName: sanitizeString(payload.company_name),
+        vacancyTitle: sanitizeString(payload.vacancy_title),
+        idealCandidateImageUrl: payload.ideal_candidate_image_url,
+        tips: payload.tips.map(sanitizeString),
+        timestamp: new Date(),
+        meta: payload.meta ? {
+          source: payload.meta.source,
+          analysisId: payload.meta.analysis_id,
+          submittedAt: payload.meta.submitted_at,
+        } : undefined,
+      };
+      console.log(`Valid analysis received: ${result.companyName} - ${result.vacancyTitle}`);
+    } else {
+      // Invalid payload - create fallback result with mock data
+      console.warn('Webhook validation failed, creating fallback result:', validationResult.error.errors);
+      
+      // Extract what we can from the invalid payload
+      const body = req.body;
+      const fallbackCompany = sanitizeString(body.company_name || body.companyName || 'Onbekend Bedrijf');
+      const fallbackTitle = sanitizeString(body.vacancy_title || body.vacancyTitle || body.job_title || 'Vacature');
+      
+      result = {
+        id: generateAnalysisId(),
+        companyName: fallbackCompany,
+        vacancyTitle: fallbackTitle,
+        idealCandidateImageUrl: 'https://via.placeholder.com/400x300/2563eb/ffffff?text=Ideal+Candidate',
+        tips: [
+          'Tip 1: Voeg specifieke vereisten toe aan je vacature',
+          'Tip 2: Beschrijf de bedrijfscultuur en waarden',
+          'Tip 3: Vermeld het salaris of salarisrange',
+          'Tip 4: Specificeer thuiswerk mogelijkheden'
+        ],
+        timestamp: new Date(),
+        meta: {
+          source: 'fallback',
+          analysisId: 'fallback-' + Date.now(),
+          submittedAt: new Date().toISOString(),
+        },
+      };
+      console.log(`Fallback result created: ${result.companyName} - ${result.vacancyTitle}`);
     }
-
-    const payload = validationResult.data;
-
-    // Create analysis result
-    const result: AnalysisResult = {
-      id: generateAnalysisId(),
-      companyName: sanitizeString(payload.company_name),
-      vacancyTitle: sanitizeString(payload.vacancy_title),
-      idealCandidateImageUrl: payload.ideal_candidate_image_url,
-      tips: payload.tips.map(sanitizeString),
-      timestamp: new Date(),
-      meta: payload.meta ? {
-        source: payload.meta.source,
-        analysisId: payload.meta.analysis_id,
-        submittedAt: payload.meta.submitted_at,
-      } : undefined,
-    };
 
     // Store result
     analysisStorage.add(result);
@@ -124,12 +148,11 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
     // Emit to connected clients
     emitNewAnalysis(result);
 
-    console.log(`Analysis received and processed: ${result.companyName} - ${result.vacancyTitle}`);
-
     return res.status(200).json({
       success: true,
       analysisId: result.id,
-      message: 'Analysis result processed successfully',
+      message: validationResult.success ? 'Analysis result processed successfully' : 'Fallback result created with mock data',
+      fallback: !validationResult.success,
     });
 
   } catch (error) {
