@@ -8,7 +8,7 @@ interface ResultPanelProps {
   onComplete: () => void;
 }
 
-const ResultPanel: React.FC<ResultPanelProps> = ({ result, displaySeconds, onComplete }) => {
+const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
   const [imageError, setImageError] = useState(false);
 
   const formatTimestamp = (date: Date) => {
