@@ -25,7 +25,9 @@ const App: React.FC = () => {
   useEffect(() => {
     const fetchConfig = async () => {
       try {
-        const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+        // Use relative URL in production, absolute URL in development
+        const serverUrl = import.meta.env.VITE_SERVER_URL || 
+          (import.meta.env.PROD ? '' : 'http://localhost:3000');
         const response = await fetch(`${serverUrl}/api/config`);
         if (response.ok) {
           const serverConfig = await response.json();
@@ -44,7 +46,8 @@ const App: React.FC = () => {
 
   // Initialize Socket.IO connection
   useEffect(() => {
-    const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+    const serverUrl = import.meta.env.VITE_SERVER_URL || 
+      (import.meta.env.PROD ? '' : 'http://localhost:3000');
     const newSocket = io(serverUrl, {
       transports: ['websocket', 'polling'],
       timeout: 20000,
@@ -82,7 +85,8 @@ const App: React.FC = () => {
     if (!isConnected) {
       const pollInterval = setInterval(async () => {
         try {
-          const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+          const serverUrl = import.meta.env.VITE_SERVER_URL || 
+            (import.meta.env.PROD ? '' : 'http://localhost:3000');
           const response = await fetch(`${serverUrl}/api/last`);
           if (response.ok) {
             const result = await response.json();
