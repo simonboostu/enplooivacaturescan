@@ -31,54 +31,54 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
       style={{ minHeight: '1920px', minWidth: '1080px' }}
     >
       <div className="h-full flex flex-col">
-        {/* Header - Much larger for kiosk */}
+        {/* Header - Optimized for vertical screen */}
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="mb-16"
+          className="mb-20"
         >
-          <div className="flex items-center justify-between mb-8">
-            <div className="text-2xl text-gray-500">
+          <div className="flex items-center justify-between mb-12">
+            <div className="text-3xl text-gray-500">
               {formatTimestamp(result.timestamp)}
             </div>
             <motion.button
               onClick={onComplete}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-brand-primary hover:bg-brand-primary/90 text-white px-8 py-4 rounded-2xl text-2xl font-semibold shadow-lg transition-colors duration-200"
+              className="bg-brand-primary hover:bg-brand-primary/90 text-white px-10 py-5 rounded-2xl text-2xl font-semibold shadow-lg transition-colors duration-200"
             >
               🏠 Terug naar start
             </motion.button>
           </div>
           
-          <h1 className="text-7xl lg:text-8xl font-bold text-brand-text mb-6 leading-tight">
+          <h1 className="text-8xl font-bold text-brand-text mb-8 leading-tight text-center">
             {result.companyName}
           </h1>
-          <h2 className="text-5xl lg:text-6xl text-brand-primary font-semibold">
+          <h2 className="text-6xl text-brand-primary font-semibold text-center">
             {result.vacancyTitle}
           </h2>
         </motion.div>
 
-        {/* Main Content - Optimized for vertical layout */}
-        <div className="flex-1 grid grid-cols-1 xl:grid-cols-2 gap-16 mb-16">
-          {/* Left: Company Info - Larger */}
+        {/* Main Content - Single column for vertical screen */}
+        <div className="flex-1 mb-20">
+          {/* Ideal Candidate Section */}
           <motion.div
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="flex flex-col justify-center"
+            className="mb-16"
           >
-            <div className="bg-white rounded-3xl p-12 shadow-xl">
-              <h3 className="text-4xl font-semibold text-brand-text mb-8">
+            <div className="bg-white rounded-3xl p-16 shadow-xl">
+              <h3 className="text-6xl font-semibold text-brand-text mb-12 text-center">
                 🎯 Ideale kandidaat
               </h3>
-              <div className="text-gray-600 text-2xl leading-relaxed">
-                <p className="mb-8">
+              <div className="text-gray-600 text-3xl leading-relaxed text-center max-w-4xl mx-auto">
+                <p className="mb-12">
                   Op basis van je vacature hebben we een profiel gemaakt van de ideale kandidaat.
                 </p>
-                <div className="bg-brand-primary/10 rounded-xl p-8">
-                  <p className="text-brand-primary font-medium text-xl">
+                <div className="bg-brand-primary/10 rounded-xl p-12">
+                  <p className="text-brand-primary font-medium text-2xl">
                     💡 Tip: Gebruik dit profiel om je vacaturetekst aan te passen en de juiste kandidaten aan te trekken.
                   </p>
                 </div>
@@ -86,14 +86,14 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
             </div>
           </motion.div>
 
-          {/* Right: Ideal Candidate Image - Larger */}
+          {/* Ideal Candidate Image - Centered */}
           <motion.div
-            initial={{ x: 20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="flex justify-center"
+            className="flex justify-center mb-16"
           >
-            <div className="relative w-full max-w-lg">
+            <div className="relative w-full max-w-2xl">
               <div className="aspect-[4/5] bg-white rounded-3xl shadow-xl overflow-hidden">
                 {!imageError ? (
                   <img
@@ -105,10 +105,10 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-gray-100">
                     <div className="text-center">
-                      <div className="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-6 flex items-center justify-center">
-                        <span className="text-6xl">👤</span>
+                      <div className="w-40 h-40 bg-gray-300 rounded-full mx-auto mb-8 flex items-center justify-center">
+                        <span className="text-8xl">👤</span>
                       </div>
-                      <p className="text-gray-500 font-medium text-2xl">Ideale kandidaat</p>
+                      <p className="text-gray-500 font-medium text-3xl">Ideale kandidaat</p>
                     </div>
                   </div>
                 )}
@@ -127,32 +127,32 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
           <ScoreCard score={result.score || 0} />
         </motion.div>
 
-        {/* Tips Section - Much larger for kiosk */}
+        {/* Tips Section - Single column for vertical screen */}
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="mb-16"
+          className="mb-20"
         >
-          <h3 className="text-5xl font-bold text-brand-text mb-12 text-center">
+          <h3 className="text-6xl font-bold text-brand-text mb-16 text-center">
             🚀 Verbeterpunten voor je vacature
           </h3>
           
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 gap-12 max-w-5xl mx-auto">
             {result.tips.map((tip, index) => (
               <motion.div
                 key={index}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 1 + index * 0.1 }}
-                className="bg-white rounded-2xl p-10 shadow-xl border-l-8 border-brand-accent"
+                className="bg-white rounded-3xl p-16 shadow-xl border-l-8 border-brand-accent"
               >
-                <div className="flex items-start space-x-6">
-                  <div className="flex-shrink-0 w-16 h-16 bg-brand-accent rounded-full flex items-center justify-center text-white font-bold text-2xl">
+                <div className="flex items-start space-x-8">
+                  <div className="flex-shrink-0 w-20 h-20 bg-brand-accent rounded-full flex items-center justify-center text-white font-bold text-3xl">
                     {index + 1}
                   </div>
-                  <p className="text-gray-700 leading-relaxed text-2xl">
-                    {tip.length > 140 ? `${tip.substring(0, 140)}...` : tip}
+                  <p className="text-gray-700 leading-relaxed text-3xl pt-2">
+                    {tip.length > 200 ? `${tip.substring(0, 200)}...` : tip}
                   </p>
                 </div>
               </motion.div>
@@ -160,14 +160,14 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
           </div>
         </motion.div>
 
-        {/* Footer with Back Button - Larger */}
+        {/* Footer with Back Button - Optimized for vertical screen */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
-          className="text-center"
+          className="text-center mb-8"
         >
-          <p className="text-2xl text-gray-500 mb-8">
+          <p className="text-3xl text-gray-500 mb-12 max-w-4xl mx-auto">
             De volledige analyse met gedetailleerde tips ontvang je via e-mail
           </p>
           
@@ -175,7 +175,7 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
             onClick={onComplete}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-brand-accent hover:bg-brand-accent/90 text-white px-12 py-6 rounded-3xl text-3xl font-bold shadow-xl transition-colors duration-200"
+            className="bg-brand-accent hover:bg-brand-accent/90 text-white px-16 py-8 rounded-3xl text-4xl font-bold shadow-xl transition-colors duration-200"
           >
             🏠 Terug naar QR code
           </motion.button>
