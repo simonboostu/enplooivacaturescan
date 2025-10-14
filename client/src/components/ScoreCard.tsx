@@ -6,6 +6,8 @@ interface ScoreCardProps {
 }
 
 const ScoreCard: React.FC<ScoreCardProps> = ({ score }) => {
+  console.log('ScoreCard rendered with score:', score);
+  
   // Don't render if score is 0 (fallback for undefined)
   if (score === 0) {
     return null;
