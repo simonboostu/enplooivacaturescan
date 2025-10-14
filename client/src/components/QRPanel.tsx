@@ -1,6 +1,7 @@
 import React from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { motion } from 'framer-motion';
+import EnplooiLogo from './EnplooiLogo';
 
 interface QRPanelProps {
   typeformUrl: string;
@@ -64,7 +65,7 @@ const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle }) => {
           </div>
         </motion.div>
         
-        {/* Instructions - Larger text */}
+        {/* Instructions - Larger text with orange accents */}
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -72,7 +73,10 @@ const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle }) => {
           className="text-3xl text-gray-500 mb-24"
         >
           <p className="font-semibold mb-4">📱 Scan met je telefoon</p>
-          <p className="text-2xl">Vul het formulier in en zie hier direct je resultaat</p>
+          <p className="text-2xl">
+            Vul het formulier in en zie hier direct je 
+            <span className="text-brand-accent font-semibold"> resultaat</span>
+          </p>
         </motion.div>
       </div>
       
@@ -83,21 +87,21 @@ const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle }) => {
         transition={{ delay: 1, duration: 0.6 }}
         className="absolute bottom-16 left-0 right-0 flex items-center justify-between px-16"
       >
-        {/* Enplooi Logo - Larger */}
+        {/* Enplooi Logo */}
         <div className="flex items-center space-x-6">
-          <div className="w-20 h-20 bg-brand-primary rounded-xl flex items-center justify-center">
-            <span className="text-white font-bold text-3xl">E</span>
-          </div>
+          <EnplooiLogo size={180} />
           <div>
-            <div className="text-3xl font-bold text-brand-text">enplooi</div>
             <div className="text-xl text-gray-500">Vacature experts</div>
           </div>
         </div>
         
-        {/* Social Proof - Larger */}
+        {/* Social Proof - Larger with orange accents */}
         <div className="text-right">
           <div className="text-2xl text-gray-500">
-            Al meer dan <span className="font-semibold text-brand-primary">10.000</span> vacatures geoptimaliseerd
+            Al meer dan <span className="font-semibold text-brand-accent">10.000</span> vacatures geoptimaliseerd
+          </div>
+          <div className="text-xl text-gray-400 mt-2">
+            ⭐⭐⭐⭐⭐ <span className="text-brand-accent font-semibold">4.8/5</span> gemiddelde beoordeling
           </div>
         </div>
       </motion.div>

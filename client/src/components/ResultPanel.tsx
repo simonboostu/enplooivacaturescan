@@ -55,7 +55,7 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
           <h1 className="text-5xl font-bold text-brand-text mb-4 leading-tight text-center">
             {result.companyName}
           </h1>
-          <h2 className="text-4xl text-brand-primary font-semibold text-center">
+          <h2 className="text-4xl text-brand-accent font-semibold text-center">
             {result.vacancyTitle}
           </h2>
         </motion.div>
@@ -69,7 +69,7 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
             transition={{ delay: 0.4 }}
           >
             <div className="bg-white rounded-2xl p-6 shadow-xl">
-              <h3 className="text-2xl font-semibold text-brand-text mb-4 text-center">
+              <h3 className="text-2xl font-semibold text-brand-accent mb-4 text-center">
                 🎯 Ideale kandidaat
               </h3>
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
@@ -77,8 +77,8 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
                   <p className="mb-3">
                     Op basis van je vacature hebben we een profiel gemaakt van de ideale kandidaat.
                   </p>
-                  <div className="bg-brand-primary/10 rounded-lg p-3">
-                    <p className="text-brand-primary font-medium text-xs">
+                  <div className="bg-brand-accent/10 rounded-lg p-3">
+                    <p className="text-brand-accent font-medium text-xs">
                       💡 Tip: Gebruik dit profiel om je vacaturetekst aan te passen en de juiste kandidaten aan te trekken.
                     </p>
                   </div>
@@ -149,28 +149,36 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
                 </motion.div>
               ))}
             </div>
+            
+            {/* Back Button - Right under tips for better kiosk usability */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2 }}
+              className="text-center mt-6"
+            >
+              <motion.button
+                onClick={onComplete}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-brand-accent hover:bg-brand-accent/90 text-white px-8 py-4 rounded-lg text-lg font-bold shadow-lg transition-colors duration-200"
+              >
+                🏠 Terug naar QR code
+              </motion.button>
+            </motion.div>
           </motion.div>
         </div>
 
-        {/* Footer with Back Button - Compact */}
+        {/* Footer - Email notice only */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
+          transition={{ delay: 1.4 }}
           className="text-center"
         >
-          <p className="text-sm text-gray-500 mb-2">
+          <p className="text-sm text-gray-500">
             De volledige analyse met gedetailleerde tips ontvang je via e-mail
           </p>
-          
-          <motion.button
-            onClick={onComplete}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-brand-accent hover:bg-brand-accent/90 text-white px-6 py-3 rounded-lg text-base font-bold shadow-lg transition-colors duration-200"
-          >
-            🏠 Terug naar QR code
-          </motion.button>
         </motion.div>
       </div>
     </motion.div>
