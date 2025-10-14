@@ -60,101 +60,90 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
           </h2>
         </motion.div>
 
-        {/* Main Content - Compact layout for viewport */}
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {/* Ideal Candidate Section - Left side */}
+        {/* Main Content - Full width layout */}
+        <div className="flex-1 space-y-4 mb-4">
+          {/* Ideal Candidate Section - Full width */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="flex flex-col justify-center"
           >
-            <div className="bg-white rounded-2xl p-8 shadow-xl">
-              <h3 className="text-3xl font-semibold text-brand-text mb-6 text-center">
+            <div className="bg-white rounded-2xl p-4 shadow-xl">
+              <h3 className="text-xl font-semibold text-brand-text mb-3 text-center">
                 🎯 Ideale kandidaat
               </h3>
-              <div className="text-gray-600 text-xl leading-relaxed text-center">
-                <p className="mb-6">
-                  Op basis van je vacature hebben we een profiel gemaakt van de ideale kandidaat.
-                </p>
-                <div className="bg-brand-primary/10 rounded-lg p-6">
-                  <p className="text-brand-primary font-medium text-lg">
-                    💡 Tip: Gebruik dit profiel om je vacaturetekst aan te passen en de juiste kandidaten aan te trekken.
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                <div className="text-gray-600 text-base leading-relaxed">
+                  <p className="mb-3">
+                    Op basis van je vacature hebben we een profiel gemaakt van de ideale kandidaat.
                   </p>
+                  <div className="bg-brand-primary/10 rounded-lg p-3">
+                    <p className="text-brand-primary font-medium text-xs">
+                      💡 Tip: Gebruik dit profiel om je vacaturetekst aan te passen en de juiste kandidaten aan te trekken.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex justify-center">
+                  <div className="relative w-32 h-40">
+                    <div className="aspect-[4/5] bg-white rounded-xl shadow-lg overflow-hidden">
+                      {!imageError ? (
+                        <img
+                          src={result.idealCandidateImageUrl}
+                          alt={`Ideale kandidaat voor ${result.vacancyTitle}`}
+                          className="w-full h-full object-cover"
+                          onError={() => setImageError(true)}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                          <div className="text-center">
+                            <div className="w-16 h-16 bg-gray-300 rounded-full mx-auto mb-2 flex items-center justify-center">
+                              <span className="text-2xl">👤</span>
+                            </div>
+                            <p className="text-gray-500 font-medium text-sm">Ideale kandidaat</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Ideal Candidate Image - Right side */}
+          {/* Score Section - Full width */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="flex justify-center"
-          >
-            <div className="relative w-full max-w-sm">
-              <div className="aspect-[4/5] bg-white rounded-2xl shadow-xl overflow-hidden">
-                {!imageError ? (
-                  <img
-                    src={result.idealCandidateImageUrl}
-                    alt={`Ideale kandidaat voor ${result.vacancyTitle}`}
-                    className="w-full h-full object-cover"
-                    onError={() => setImageError(true)}
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                    <div className="text-center">
-                      <div className="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <span className="text-4xl">👤</span>
-                      </div>
-                      <p className="text-gray-500 font-medium text-lg">Ideale kandidaat</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Score and Tips Section - Compact layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          {/* Score Section */}
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="lg:col-span-1"
           >
             <ScoreCard score={result.score || 0} />
           </motion.div>
 
-          {/* Tips Section - Compact */}
+          {/* Tips Section - Full width */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.8 }}
-            className="lg:col-span-2"
           >
-            <h3 className="text-2xl font-bold text-brand-text mb-4 text-center">
+            <h3 className="text-lg font-bold text-brand-text mb-3 text-center">
               🚀 Verbeterpunten voor je vacature
             </h3>
             
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {result.tips.map((tip, index) => (
                 <motion.div
                   key={index}
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 1 + index * 0.1 }}
-                  className="bg-white rounded-xl p-4 shadow-lg border-l-4 border-brand-accent"
+                  className="bg-white rounded-lg p-3 shadow-lg border-l-4 border-brand-accent"
                 >
-                  <div className="flex items-start space-x-3">
-                    <div className="flex-shrink-0 w-8 h-8 bg-brand-accent rounded-full flex items-center justify-center text-white font-bold text-sm">
+                  <div className="flex items-start space-x-2">
+                    <div className="flex-shrink-0 w-6 h-6 bg-brand-accent rounded-full flex items-center justify-center text-white font-bold text-xs">
                       {index + 1}
                     </div>
-                    <p className="text-gray-700 leading-relaxed text-sm">
-                      {tip.length > 120 ? `${tip.substring(0, 120)}...` : tip}
+                    <p className="text-gray-700 leading-relaxed text-xs">
+                      {tip.length > 100 ? `${tip.substring(0, 100)}...` : tip}
                     </p>
                   </div>
                 </motion.div>
@@ -170,7 +159,7 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
           transition={{ delay: 1.2 }}
           className="text-center"
         >
-          <p className="text-lg text-gray-500 mb-4">
+          <p className="text-sm text-gray-500 mb-2">
             De volledige analyse met gedetailleerde tips ontvang je via e-mail
           </p>
           
@@ -178,7 +167,7 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
             onClick={onComplete}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-brand-accent hover:bg-brand-accent/90 text-white px-8 py-4 rounded-xl text-xl font-bold shadow-lg transition-colors duration-200"
+            className="bg-brand-accent hover:bg-brand-accent/90 text-white px-6 py-3 rounded-lg text-base font-bold shadow-lg transition-colors duration-200"
           >
             🏠 Terug naar QR code
           </motion.button>
