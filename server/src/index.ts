@@ -120,7 +120,8 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
       ];
       const normalizedTips = [...parsedTips].slice(0, 4);
       while (normalizedTips.length < 4) {
-        normalizedTips.push(defaultTips[normalizedTips.length]);
+        const nextTip = defaultTips[normalizedTips.length] ?? 'Tip';
+        normalizedTips.push(nextTip);
       }
       result = {
         id: generateAnalysisId(),
