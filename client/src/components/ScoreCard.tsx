@@ -6,6 +6,11 @@ interface ScoreCardProps {
 }
 
 const ScoreCard: React.FC<ScoreCardProps> = ({ score }) => {
+  // Don't render if score is 0 (fallback for undefined)
+  if (score === 0) {
+    return null;
+  }
+
   const getScoreMessage = (score: number): string => {
     if (score >= 0 && score <= 30) {
       return '🔴 Basic mainstream: weinig onderscheidend, trekt geen topkandidaten. (0% - 30%)';

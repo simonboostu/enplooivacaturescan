@@ -123,13 +123,23 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
         const nextTip = defaultTips[normalizedTips.length] ?? 'Tip';
         normalizedTips.push(nextTip);
       }
+      // Convert score to number if it's a string (handle both "score" and "Score")
+      let scoreNum: number | undefined;
+      const rawScore = (payload as any).score || (payload as any).Score;
+      if (rawScore !== undefined) {
+        scoreNum = typeof rawScore === 'string' ? parseFloat(rawScore) : rawScore;
+        if (isNaN(scoreNum) || scoreNum < 0 || scoreNum > 100) {
+          scoreNum = undefined;
+        }
+      }
+
       result = {
         id: generateAnalysisId(),
         companyName: sanitizeString(payload.company_name),
         vacancyTitle: sanitizeString(payload.vacancy_title),
         idealCandidateImageUrl: payload.ideal_candidate_image_url,
         tips: normalizedTips.map(sanitizeString),
-        score: payload.score,
+        score: scoreNum,
         timestamp: new Date(),
         meta: payload.meta ? {
           source: payload.meta.source,
@@ -137,7 +147,7 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
           submittedAt: payload.meta.submitted_at,
         } : undefined,
       };
-      console.log(`Valid analysis received: ${result.companyName} - ${result.vacancyTitle} (tips=${normalizedTips.length})`);
+      console.log(`Valid analysis received: ${result.companyName} - ${result.vacancyTitle} (tips=${normalizedTips.length}, score=${result.score})`);
     } else {
       // Invalid payload - create fallback result with mock data
       console.warn('Webhook validation failed, creating fallback result:', validationResult.error.errors);
@@ -165,8 +175,8 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
               .filter((t) => t.length > 0);
       }
       
-      // Try to parse score from the invalid payload
-      const rawScore = body.score;
+      // Try to parse score from the invalid payload (handle both "score" and "Score")
+      const rawScore = body.score || body.Score;
       let parsedScore: number | undefined;
       if (rawScore !== undefined && rawScore !== null) {
         const scoreNum = Number(rawScore);
@@ -201,7 +211,7 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
           submittedAt: new Date().toISOString(),
         },
       };
-      console.log(`Fallback result created: ${result.companyName} - ${result.vacancyTitle} (tips=${normalizedTips.length})`);
+      console.log(`Fallback result created: ${result.companyName} - ${result.vacancyTitle} (tips=${normalizedTips.length}, score=${result.score})`);
     }
 
     // Store result

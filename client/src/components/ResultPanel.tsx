@@ -118,16 +118,14 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
         </div>
 
         {/* Score Section */}
-        {result.score !== undefined && (
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="mb-16"
-          >
-            <ScoreCard score={result.score} />
-          </motion.div>
-        )}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="mb-16"
+        >
+          <ScoreCard score={result.score || 0} />
+        </motion.div>
 
         {/* Tips Section - Much larger for kiosk */}
         <motion.div

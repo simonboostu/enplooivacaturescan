@@ -10,7 +10,8 @@ export const WebhookPayloadSchema = z.object({
     z.array(z.string().min(1, 'Tip cannot be empty')).min(1, 'At least one tip'),
     z.string().min(1, 'Tips string cannot be empty'),
   ]),
-  score: z.number().min(0).max(100).optional(),
+  score: z.union([z.string(), z.number()]).optional(),
+  Score: z.union([z.string(), z.number()]).optional(),
   meta: z.object({
     source: z.string().optional(),
     analysis_id: z.string().optional(),
