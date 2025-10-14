@@ -127,9 +127,9 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
       let scoreNum: number | undefined;
       const rawScore = (payload as any).score || (payload as any).Score;
       if (rawScore !== undefined) {
-        scoreNum = typeof rawScore === 'string' ? parseFloat(rawScore) : rawScore;
-        if (isNaN(scoreNum) || scoreNum < 0 || scoreNum > 100) {
-          scoreNum = undefined;
+        const parsedScore = typeof rawScore === 'string' ? parseFloat(rawScore) : rawScore;
+        if (!isNaN(parsedScore) && parsedScore >= 0 && parsedScore <= 100) {
+          scoreNum = parsedScore;
         }
       }
 
