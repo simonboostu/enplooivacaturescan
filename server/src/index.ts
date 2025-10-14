@@ -146,17 +146,42 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
       const fallbackCompany = sanitizeString(body.company_name || body.companyName || 'Onbekend Bedrijf');
       const fallbackTitle = sanitizeString(body.vacancy_title || body.vacancyTitle || body.job_title || 'Vacature');
       
+      // Try to parse tips from the invalid payload
+      const rawTips = body.tips;
+      let parsedTips: string[] = [];
+      if (rawTips) {
+        parsedTips = Array.isArray(rawTips)
+          ? (rawTips as unknown[])
+              .flatMap((item) =>
+                String(item)
+                  .split(/[\n;|,]+/)
+                  .map((t) => t.trim())
+              )
+              .filter((t) => t.length > 0)
+          : String(rawTips)
+              .split(/[\n;|,]+/)
+              .map((t) => t.trim())
+              .filter((t) => t.length > 0);
+      }
+      
+      const defaultTips = [
+        'Tip 1: Voeg specifieke vereisten toe aan je vacature',
+        'Tip 2: Beschrijf de bedrijfscultuur en waarden',
+        'Tip 3: Vermeld het salaris of salarisrange',
+        'Tip 4: Specificeer thuiswerk mogelijkheden'
+      ];
+      const normalizedTips = [...parsedTips].slice(0, 4);
+      while (normalizedTips.length < 4) {
+        const nextTip = defaultTips[normalizedTips.length] ?? 'Tip';
+        normalizedTips.push(nextTip);
+      }
+      
       result = {
         id: generateAnalysisId(),
         companyName: fallbackCompany,
         vacancyTitle: fallbackTitle,
         idealCandidateImageUrl: 'https://via.placeholder.com/400x300/2563eb/ffffff?text=Ideal+Candidate',
-        tips: [
-          'Tip 1: Voeg specifieke vereisten toe aan je vacature',
-          'Tip 2: Beschrijf de bedrijfscultuur en waarden',
-          'Tip 3: Vermeld het salaris of salarisrange',
-          'Tip 4: Specificeer thuiswerk mogelijkheden'
-        ],
+        tips: normalizedTips.map(sanitizeString),
         timestamp: new Date(),
         meta: {
           source: 'fallback',
@@ -164,7 +189,7 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
           submittedAt: new Date().toISOString(),
         },
       };
-      console.log(`Fallback result created: ${result.companyName} - ${result.vacancyTitle}`);
+      console.log(`Fallback result created: ${result.companyName} - ${result.vacancyTitle} (tips=${normalizedTips.length})`);
     }
 
     // Store result
