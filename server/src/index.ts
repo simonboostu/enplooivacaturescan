@@ -101,7 +101,13 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
       // Normalize tips: accept array or delimited string (\n, ;, |)
       const rawTips = payload.tips as unknown;
       const parsedTips = Array.isArray(rawTips)
-        ? rawTips
+        ? (rawTips as unknown[])
+            .flatMap((item) =>
+              String(item)
+                .split(/[\n;|]+/)
+                .map((t) => t.trim())
+            )
+            .filter((t) => t.length > 0)
         : String(rawTips)
             .split(/[\n;|]+/)
             .map((t) => t.trim())
