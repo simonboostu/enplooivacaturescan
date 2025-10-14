@@ -4,6 +4,7 @@ export interface AnalysisResult {
   vacancyTitle: string;
   idealCandidateImageUrl: string;
   tips: string[];
+  score?: number;
   timestamp: Date;
   meta?: {
     source?: string;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AnalysisResult } from '../types';
+import ScoreCard from './ScoreCard';
 
 interface ResultPanelProps {
   result: AnalysisResult;
@@ -115,6 +116,18 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
             </div>
           </motion.div>
         </div>
+
+        {/* Score Section */}
+        {result.score !== undefined && (
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="mb-16"
+          >
+            <ScoreCard score={result.score} />
+          </motion.div>
+        )}
 
         {/* Tips Section - Much larger for kiosk */}
         <motion.div

@@ -10,6 +10,7 @@ export const WebhookPayloadSchema = z.object({
     z.array(z.string().min(1, 'Tip cannot be empty')).min(1, 'At least one tip'),
     z.string().min(1, 'Tips string cannot be empty'),
   ]),
+  score: z.number().min(0).max(100).optional(),
   meta: z.object({
     source: z.string().optional(),
     analysis_id: z.string().optional(),
@@ -26,6 +27,7 @@ export interface AnalysisResult {
   vacancyTitle: string;
   idealCandidateImageUrl: string;
   tips: string[];
+  score?: number;
   timestamp: Date;
   meta?: {
     source?: string;

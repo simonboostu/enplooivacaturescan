@@ -129,6 +129,7 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
         vacancyTitle: sanitizeString(payload.vacancy_title),
         idealCandidateImageUrl: payload.ideal_candidate_image_url,
         tips: normalizedTips.map(sanitizeString),
+        score: payload.score,
         timestamp: new Date(),
         meta: payload.meta ? {
           source: payload.meta.source,
@@ -146,7 +147,7 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
       const fallbackCompany = sanitizeString(body.company_name || body.companyName || 'Onbekend Bedrijf');
       const fallbackTitle = sanitizeString(body.vacancy_title || body.vacancyTitle || body.job_title || 'Vacature');
       
-      // Try to parse tips from the invalid payload
+      // Try to parse tips and score from the invalid payload
       const rawTips = body.tips;
       let parsedTips: string[] = [];
       if (rawTips) {
@@ -162,6 +163,16 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
               .split(/[\n;|,]+/)
               .map((t) => t.trim())
               .filter((t) => t.length > 0);
+      }
+      
+      // Try to parse score from the invalid payload
+      const rawScore = body.score;
+      let parsedScore: number | undefined;
+      if (rawScore !== undefined && rawScore !== null) {
+        const scoreNum = Number(rawScore);
+        if (!isNaN(scoreNum) && scoreNum >= 0 && scoreNum <= 100) {
+          parsedScore = scoreNum;
+        }
       }
       
       const defaultTips = [
@@ -182,6 +193,7 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
         vacancyTitle: fallbackTitle,
         idealCandidateImageUrl: 'https://via.placeholder.com/400x300/2563eb/ffffff?text=Ideal+Candidate',
         tips: normalizedTips.map(sanitizeString),
+        score: parsedScore,
         timestamp: new Date(),
         meta: {
           source: 'fallback',
