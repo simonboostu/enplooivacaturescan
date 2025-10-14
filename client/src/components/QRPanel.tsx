@@ -89,7 +89,7 @@ const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle }) => {
       >
         {/* Enplooi Logo */}
         <div className="flex items-center space-x-6">
-          <EnplooiLogo size={180} />
+          <EnplooiLogo width={180} height={72} />
           <div>
             <div className="text-xl text-gray-500">Vacature experts</div>
           </div>
