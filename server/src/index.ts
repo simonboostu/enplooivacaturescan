@@ -98,12 +98,30 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
     if (validationResult.success) {
       // Valid payload - process normally
       const payload = validationResult.data;
+      // Normalize tips: accept array or delimited string (\n, ;, |)
+      const rawTips = payload.tips as unknown;
+      const parsedTips = Array.isArray(rawTips)
+        ? rawTips
+        : String(rawTips)
+            .split(/[\n;|]+/)
+            .map((t) => t.trim())
+            .filter((t) => t.length > 0);
+      const defaultTips = [
+        'Tip 1: Voeg specifieke vereisten toe aan je vacature',
+        'Tip 2: Beschrijf de bedrijfscultuur en waarden',
+        'Tip 3: Vermeld het salaris of salarisrange',
+        'Tip 4: Specificeer thuiswerk mogelijkheden',
+      ];
+      const normalizedTips = [...parsedTips].slice(0, 4);
+      while (normalizedTips.length < 4) {
+        normalizedTips.push(defaultTips[normalizedTips.length]);
+      }
       result = {
         id: generateAnalysisId(),
         companyName: sanitizeString(payload.company_name),
         vacancyTitle: sanitizeString(payload.vacancy_title),
         idealCandidateImageUrl: payload.ideal_candidate_image_url,
-        tips: payload.tips.map(sanitizeString),
+        tips: normalizedTips.map(sanitizeString),
         timestamp: new Date(),
         meta: payload.meta ? {
           source: payload.meta.source,
