@@ -104,12 +104,12 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
         ? (rawTips as unknown[])
             .flatMap((item) =>
               String(item)
-                .split(/[\n;|]+/)
+                .split(/[\n;|,]+/)
                 .map((t) => t.trim())
             )
             .filter((t) => t.length > 0)
         : String(rawTips)
-            .split(/[\n;|]+/)
+            .split(/[\n;|,]+/)
             .map((t) => t.trim())
             .filter((t) => t.length > 0);
       const defaultTips = [
@@ -136,7 +136,7 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
           submittedAt: payload.meta.submitted_at,
         } : undefined,
       };
-      console.log(`Valid analysis received: ${result.companyName} - ${result.vacancyTitle}`);
+      console.log(`Valid analysis received: ${result.companyName} - ${result.vacancyTitle} (tips=${normalizedTips.length})`);
     } else {
       // Invalid payload - create fallback result with mock data
       console.warn('Webhook validation failed, creating fallback result:', validationResult.error.errors);
