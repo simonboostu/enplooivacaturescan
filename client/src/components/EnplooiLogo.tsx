@@ -1,4 +1,5 @@
 import React from 'react';
+import enplooiLogo from './enplooi-logo.png';
 
 interface EnplooiLogoProps {
   width?: number;
@@ -6,14 +7,14 @@ interface EnplooiLogoProps {
   className?: string;
 }
 
-const EnplooiLogo: React.FC<EnplooiLogoProps> = ({ 
-  width = 180, 
-  height = 72, 
-  className = "" 
+const EnplooiLogo: React.FC<EnplooiLogoProps> = ({
+  width = 180,
+  height = 72,
+  className = ""
 }) => {
   return (
     <img
-      src="/enplooi-logo.png"
+      src={enplooiLogo}
       alt="enplooi"
       width={width}
       height={height}
