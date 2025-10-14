@@ -25,9 +25,14 @@ const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle }) => {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="text-8xl lg:text-9xl font-bold text-brand-text mb-12 leading-tight"
+          className="text-6xl lg:text-7xl font-bold text-brand-text mb-8 leading-tight"
         >
-          {kioskTitle}
+          {kioskTitle.split('\n').map((line, index) => (
+            <React.Fragment key={index}>
+              {line}
+              {index < kioskTitle.split('\n').length - 1 && <br />}
+            </React.Fragment>
+          ))}
         </motion.h1>
         
         {/* Subtitle - Larger and more spaced */}
@@ -90,18 +95,12 @@ const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle }) => {
         {/* Enplooi Logo */}
         <div className="flex items-center space-x-6">
           <EnplooiLogo width={180} height={72} />
-          <div>
-            <div className="text-xl text-gray-500">Vacature experts</div>
-          </div>
         </div>
         
         {/* Social Proof - Larger with orange accents */}
         <div className="text-right">
           <div className="text-2xl text-gray-500">
             Al meer dan <span className="font-semibold text-brand-accent">10.000</span> vacatures geoptimaliseerd
-          </div>
-          <div className="text-xl text-gray-400 mt-2">
-            ⭐⭐⭐⭐⭐ <span className="text-brand-accent font-semibold">4.8/5</span> gemiddelde beoordeling
           </div>
         </div>
       </motion.div>

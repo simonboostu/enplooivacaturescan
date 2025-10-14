@@ -23,7 +23,7 @@ export const config: Config = {
   brandAccent: process.env['BRAND_ACCENT'] || '#f59e0b',
   brandBg: process.env['BRAND_BG'] || '#ffffff',
   brandText: process.env['BRAND_TEXT'] || '#1f2937',
-  kioskTitle: process.env['KIOSK_TITLE'] || 'Gratis Vacaturescan',
+  kioskTitle: process.env['KIOSK_TITLE'] || 'Is jouw vacature basic of briljant?\nStart hier je AI vacaturescan!',
 };
 
 // Validate required config
