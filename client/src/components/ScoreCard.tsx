@@ -38,21 +38,21 @@ const ScoreCard: React.FC<ScoreCardProps> = ({ score }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3, duration: 0.6 }}
-      className="bg-white rounded-2xl shadow-xl p-4 border-2 border-gray-100 w-full"
+      className="bg-white rounded-2xl shadow-xl p-6 border-2 border-gray-100 w-full"
     >
-      <h3 className="text-lg font-bold text-brand-primary mb-3 text-center">
+      <h3 className="text-xl font-bold text-brand-primary mb-4 text-center">
         Hoe origineel is jouw vacature?
       </h3>
       
       <div className="text-center">
-        <p className="text-sm font-semibold text-gray-700 mb-2">
+        <p className="text-base font-semibold text-gray-700 mb-3">
           Uw score:
         </p>
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.6, type: "spring", stiffness: 200 }}
-          className={`text-3xl font-bold ${getScoreColor(displayScore)} mb-2`}
+          className={`text-4xl font-bold ${getScoreColor(displayScore)} mb-3`}
         >
           {displayScore}%
         </motion.div>
@@ -61,7 +61,7 @@ const ScoreCard: React.FC<ScoreCardProps> = ({ score }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.4 }}
-          className="text-xs text-gray-600 leading-relaxed"
+          className="text-sm text-gray-600 leading-relaxed"
         >
           {getScoreMessage(displayScore)}
         </motion.p>

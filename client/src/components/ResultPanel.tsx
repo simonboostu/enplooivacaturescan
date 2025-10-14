@@ -61,19 +61,19 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
         </motion.div>
 
         {/* Main Content - Full width layout */}
-        <div className="flex-1 space-y-4 mb-4">
+        <div className="flex-1 space-y-6 mb-6">
           {/* Ideal Candidate Section - Full width */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            <div className="bg-white rounded-2xl p-4 shadow-xl">
-              <h3 className="text-xl font-semibold text-brand-text mb-3 text-center">
+            <div className="bg-white rounded-2xl p-6 shadow-xl">
+              <h3 className="text-2xl font-semibold text-brand-text mb-4 text-center">
                 🎯 Ideale kandidaat
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
-                <div className="text-gray-600 text-base leading-relaxed">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+                <div className="lg:col-span-1 text-gray-600 text-base leading-relaxed">
                   <p className="mb-3">
                     Op basis van je vacature hebben we een profiel gemaakt van de ideale kandidaat.
                   </p>
@@ -83,8 +83,8 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
                     </p>
                   </div>
                 </div>
-                <div className="flex justify-center">
-                  <div className="relative w-32 h-40">
+                <div className="lg:col-span-2 flex justify-center">
+                  <div className="relative w-64 h-80">
                     <div className="aspect-[4/5] bg-white rounded-xl shadow-lg overflow-hidden">
                       {!imageError ? (
                         <img
@@ -96,10 +96,10 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-gray-100">
                           <div className="text-center">
-                            <div className="w-16 h-16 bg-gray-300 rounded-full mx-auto mb-2 flex items-center justify-center">
-                              <span className="text-2xl">👤</span>
+                            <div className="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-4 flex items-center justify-center">
+                              <span className="text-4xl">👤</span>
                             </div>
-                            <p className="text-gray-500 font-medium text-sm">Ideale kandidaat</p>
+                            <p className="text-gray-500 font-medium text-base">Ideale kandidaat</p>
                           </div>
                         </div>
                       )}
@@ -119,31 +119,31 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
             <ScoreCard score={result.score || 0} />
           </motion.div>
 
-          {/* Tips Section - Full width */}
+          {/* Tips Section - Single column for better screen filling */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.8 }}
           >
-            <h3 className="text-lg font-bold text-brand-text mb-3 text-center">
+            <h3 className="text-xl font-bold text-brand-text mb-4 text-center">
               🚀 Verbeterpunten voor je vacature
             </h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="space-y-3">
               {result.tips.map((tip, index) => (
                 <motion.div
                   key={index}
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 1 + index * 0.1 }}
-                  className="bg-white rounded-lg p-3 shadow-lg border-l-4 border-brand-accent"
+                  className="bg-white rounded-lg p-4 shadow-lg border-l-4 border-brand-accent"
                 >
-                  <div className="flex items-start space-x-2">
-                    <div className="flex-shrink-0 w-6 h-6 bg-brand-accent rounded-full flex items-center justify-center text-white font-bold text-xs">
+                  <div className="flex items-start space-x-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-brand-accent rounded-full flex items-center justify-center text-white font-bold text-sm">
                       {index + 1}
                     </div>
-                    <p className="text-gray-700 leading-relaxed text-xs">
-                      {tip.length > 100 ? `${tip.substring(0, 100)}...` : tip}
+                    <p className="text-gray-700 leading-relaxed text-sm">
+                      {tip.length > 150 ? `${tip.substring(0, 150)}...` : tip}
                     </p>
                   </div>
                 </motion.div>
