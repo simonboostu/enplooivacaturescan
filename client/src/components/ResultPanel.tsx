@@ -160,7 +160,7 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
-          className="text-center mb-6"
+          className="flex justify-center mb-6"
         >
           <EnplooiLogo width={120} height={48} />
         </motion.div>

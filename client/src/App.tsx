@@ -3,6 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import { io, Socket } from 'socket.io-client';
 import QRPanel from './components/QRPanel';
 import ResultPanel from './components/ResultPanel';
+import AITransition from './components/AITransition';
 import { AnalysisResult, AppState, AppConfig } from './types';
 import { useTheme } from './lib/theme';
 
@@ -116,14 +117,19 @@ const App: React.FC = () => {
     }
 
     if (state === 'idle') {
-      // Show immediately if we're idle
+      // Show AI transition first, then results
       setCurrentResult(result);
-      setState('showing');
+      setState('ai-transition');
     } else {
       // Add to queue if we're already showing something
       setQueue(prev => [...prev, result]);
     }
   }, [state]);
+
+  // Handle AI transition completion
+  const handleAITransitionComplete = useCallback(() => {
+    setState('showing');
+  }, []);
 
   // Handle result display completion
   const handleResultComplete = useCallback(() => {
@@ -295,6 +301,11 @@ const App: React.FC = () => {
             typeformUrl={config.typeformUrl}
             kioskTitle={config.kioskTitle}
             kioskSubtitle={config.kioskSubtitle}
+          />
+        ) : state === 'ai-transition' ? (
+          <AITransition
+            key="ai-transition"
+            onComplete={handleAITransitionComplete}
           />
         ) : currentResult ? (
           <ResultPanel

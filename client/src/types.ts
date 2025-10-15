@@ -13,7 +13,7 @@ export interface AnalysisResult {
   };
 }
 
-export type AppState = 'idle' | 'showing' | 'processing';
+export type AppState = 'idle' | 'showing' | 'processing' | 'ai-transition';
 
 export interface AppConfig {
   typeformUrl: string;
