@@ -3,9 +3,10 @@ import { motion } from 'framer-motion';
 
 interface ScoreCardProps {
   score: number;
+  analysisParagraph?: string;
 }
 
-const ScoreCard: React.FC<ScoreCardProps> = ({ score }) => {
+const ScoreCard: React.FC<ScoreCardProps> = ({ score, analysisParagraph }) => {
   console.log('ScoreCard rendered with score:', score);
   
   // Show a default score of 75 if no score provided (for demo purposes)
@@ -65,6 +66,21 @@ const ScoreCard: React.FC<ScoreCardProps> = ({ score }) => {
         >
           {getScoreMessage(displayScore)}
         </motion.p>
+
+        {/* Analysis Paragraph */}
+        {analysisParagraph && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.0, duration: 0.4 }}
+            className="mt-4 pt-4 border-t border-gray-200"
+          >
+            <div 
+              className="text-sm text-brand-text/90 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: analysisParagraph }}
+            />
+          </motion.div>
+        )}
       </div>
     </motion.div>
   );

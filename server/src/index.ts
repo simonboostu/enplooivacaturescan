@@ -119,6 +119,20 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
       if (lines.length > 0 && lines[0] && lines[0].trim().startsWith('##')) {
         processedContent = lines.slice(1).join('\n').trim();
       }
+
+      // Split content into paragraph and tips list
+      let analysisParagraph = '';
+      let analysisTips = '';
+      
+      // Find the first <ul> tag to split content
+      const ulIndex = processedContent.indexOf('<ul>');
+      if (ulIndex !== -1) {
+        analysisParagraph = processedContent.substring(0, ulIndex).trim();
+        analysisTips = processedContent.substring(ulIndex).trim();
+      } else {
+        // If no <ul> found, put everything in tips
+        analysisTips = processedContent;
+      }
       
       // Convert score to number if it's a string (handle both "score" and "Score")
       let scoreNum: number | undefined;
@@ -135,7 +149,8 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
         companyName: sanitizeString(payload.company_name),
         vacancyTitle: sanitizeString(payload.vacancy_title),
         idealCandidateImageUrl: processImageUrl(payload.ideal_candidate_image_url),
-        analysisContent: processedContent, // Don't sanitize HTML content
+        analysisParagraph: analysisParagraph, // Don't sanitize HTML content
+        analysisTips: analysisTips, // Don't sanitize HTML content
         score: scoreNum,
         timestamp: new Date(),
         meta: payload.meta ? {
@@ -165,11 +180,24 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
         }
       }
       
-      // If no content available, create default HTML content
-      if (!fallbackContent) {
-        fallbackContent = `
-          <p>De vacaturetekst voor ${fallbackTitle} bij ${fallbackCompany} heeft een goede basis, maar er zijn enkele verbeterpunten mogelijk.</p>
-          
+      // Split fallback content into paragraph and tips list
+      let fallbackParagraph = '';
+      let fallbackTips = '';
+      
+      if (fallbackContent) {
+        const ulIndex = fallbackContent.indexOf('<ul>');
+        if (ulIndex !== -1) {
+          fallbackParagraph = fallbackContent.substring(0, ulIndex).trim();
+          fallbackTips = fallbackContent.substring(ulIndex).trim();
+        } else {
+          fallbackTips = fallbackContent;
+        }
+      }
+      
+      // If no content available, create default content
+      if (!fallbackParagraph && !fallbackTips) {
+        fallbackParagraph = `<p>De vacaturetekst voor ${fallbackTitle} bij ${fallbackCompany} heeft een goede basis, maar er zijn enkele verbeterpunten mogelijk.</p>`;
+        fallbackTips = `
           <ul>
             <li>
               <h3>Specifieke vereisten toevoegen</h3>
@@ -206,7 +234,8 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
         companyName: fallbackCompany,
         vacancyTitle: fallbackTitle,
         idealCandidateImageUrl: processImageUrl(body.ideal_candidate_image_url || 'https://via.placeholder.com/400x300/2563eb/ffffff?text=Ideal+Candidate'),
-        analysisContent: fallbackContent, // Don't sanitize HTML content
+        analysisParagraph: fallbackParagraph, // Don't sanitize HTML content
+        analysisTips: fallbackTips, // Don't sanitize HTML content
         score: parsedScore,
         timestamp: new Date(),
         meta: {

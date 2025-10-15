@@ -28,7 +28,8 @@ export interface AnalysisResult {
   companyName: string;
   vacancyTitle: string;
   idealCandidateImageUrl: string;
-  analysisContent: string; // HTML content for analysis results
+  analysisParagraph: string; // First paragraph for ScoreCard
+  analysisTips: string; // List content for Analyse card
   score?: number;
   timestamp: Date;
   meta?: {

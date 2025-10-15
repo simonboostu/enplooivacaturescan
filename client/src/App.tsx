@@ -202,9 +202,8 @@ const App: React.FC = () => {
           companyName: 'Demo Bedrijf',
           vacancyTitle: 'Software Developer',
           idealCandidateImageUrl: 'https://via.placeholder.com/400x300/2563eb/ffffff?text=Ideal+Candidate',
-          analysisContent: `
-            <p>De vacaturetekst voor Software Developer bij Demo Bedrijf heeft een goede basis, maar er zijn enkele verbeterpunten mogelijk om de juiste kandidaten aan te trekken.</p>
-            
+          analysisParagraph: `<p>De vacaturetekst voor Software Developer bij Demo Bedrijf heeft een goede basis, maar er zijn enkele verbeterpunten mogelijk om de juiste kandidaten aan te trekken.</p>`,
+          analysisTips: `
             <ul>
               <li>
                 <h3>Specifieke technische vaardigheden toevoegen</h3>

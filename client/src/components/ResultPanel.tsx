@@ -116,7 +116,7 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.6 }}
           >
-            <ScoreCard score={result.score || 0} />
+            <ScoreCard score={result.score || 0} analysisParagraph={result.analysisParagraph} />
           </motion.div>
 
           {/* Analysis Content Section - HTML styled content */}
@@ -132,7 +132,7 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
               
               <div 
                 className="analysis-content"
-                dangerouslySetInnerHTML={{ __html: result.analysisContent }}
+                dangerouslySetInnerHTML={{ __html: result.analysisTips }}
               />
               
               {/* Back Button - Right under analysis for better kiosk usability */}
