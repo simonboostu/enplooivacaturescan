@@ -100,7 +100,8 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
       const payload = validationResult.data;
       
       // Process HTML content and filter out matching percentage line
-      let processedContent = payload.analysis_content;
+      // Accept content from either analysis_content or tips field
+      let processedContent = payload.analysis_content || payload.tips || '';
       
       // Remove the first line if it starts with "## Matching percentage:"
       const lines = processedContent.split('\n');
@@ -143,7 +144,7 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
       const fallbackTitle = sanitizeString(body.vacancy_title || body.vacancyTitle || body.job_title || 'Vacature');
       
       // Try to parse HTML content from the invalid payload
-      let fallbackContent = body.analysis_content || body.content || '';
+      let fallbackContent = body.analysis_content || body.tips || body.content || '';
       
       // Remove the first line if it starts with "## Matching percentage:"
       if (fallbackContent) {
