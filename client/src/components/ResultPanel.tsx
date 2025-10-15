@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AnalysisResult } from '../types';
 import ScoreCard from './ScoreCard';
+import EnplooiLogo from './EnplooiLogo';
 
 interface ResultPanelProps {
   result: AnalysisResult;
@@ -154,6 +155,16 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
           </motion.div>
         </div>
 
+        {/* Enplooi Logo Section */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2 }}
+          className="text-center mb-6"
+        >
+          <EnplooiLogo width={120} height={48} />
+        </motion.div>
+
         {/* Footer - Email notice only */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -161,7 +172,7 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
           transition={{ delay: 1.4 }}
           className="text-center"
         >
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-brand-text/70">
             De volledige analyse met gedetailleerde tips ontvang je via e-mail
           </p>
         </motion.div>
