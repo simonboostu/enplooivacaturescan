@@ -194,12 +194,29 @@ const App: React.FC = () => {
           companyName: 'Demo Bedrijf',
           vacancyTitle: 'Software Developer',
           idealCandidateImageUrl: 'https://via.placeholder.com/400x300/2563eb/ffffff?text=Ideal+Candidate',
-          tips: [
-            'Tip 1: Voeg specifieke technische vaardigheden toe',
-            'Tip 2: Beschrijf de bedrijfscultuur en waarden',
-            'Tip 3: Vermeld salaris en secundaire arbeidsvoorwaarden',
-            'Tip 4: Specificeer thuiswerk en flexibele werktijden'
-          ],
+          analysisContent: `
+            <p>De vacaturetekst voor Software Developer bij Demo Bedrijf heeft een goede basis, maar er zijn enkele verbeterpunten mogelijk om de juiste kandidaten aan te trekken.</p>
+            
+            <ul>
+              <li>
+                <h3>Specifieke technische vaardigheden toevoegen</h3>
+                <p>Voeg meer specifieke technische vaardigheden toe aan je vacature om de juiste kandidaten aan te trekken.</p>
+              </li>
+              <li>
+                <h3>Bedrijfscultuur beschrijven</h3>
+                <p>Beschrijf de bedrijfscultuur en waarden om kandidaten een beter beeld te geven van de werkomgeving.</p>
+              </li>
+              <li>
+                <h3>Salaris en secundaire arbeidsvoorwaarden</h3>
+                <p>Vermeld salaris en secundaire arbeidsvoorwaarden om transparantie te bieden en geschikte kandidaten aan te trekken.</p>
+              </li>
+              <li>
+                <h3>Thuiswerk en flexibele werktijden</h3>
+                <p>Specificeer thuiswerk en flexibele werktijden om flexibiliteit te bieden en meer kandidaten aan te spreken.</p>
+              </li>
+            </ul>
+          `,
+          score: 75,
           timestamp: new Date(),
           meta: {
             source: 'test-keystroke',
@@ -280,7 +297,6 @@ const App: React.FC = () => {
           <ResultPanel
             key={`result-${currentResult.id}`}
             result={currentResult}
-            displaySeconds={config.displaySeconds}
             onComplete={handleResultComplete}
           />
         ) : null}

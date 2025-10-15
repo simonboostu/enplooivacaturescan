@@ -3,7 +3,7 @@ export interface AnalysisResult {
   companyName: string;
   vacancyTitle: string;
   idealCandidateImageUrl: string;
-  tips: string[];
+  analysisContent: string; // HTML content for analysis results
   score?: number;
   timestamp: Date;
   meta?: {

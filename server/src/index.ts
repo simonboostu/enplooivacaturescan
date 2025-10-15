@@ -98,31 +98,16 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
     if (validationResult.success) {
       // Valid payload - process normally
       const payload = validationResult.data;
-      // Normalize tips: accept array or delimited string (\n, ;, |)
-      const rawTips = payload.tips as unknown;
-      const parsedTips = Array.isArray(rawTips)
-        ? (rawTips as unknown[])
-            .flatMap((item) =>
-              String(item)
-                .split(/[\n;|,]+/)
-                .map((t) => t.trim())
-            )
-            .filter((t) => t.length > 0)
-        : String(rawTips)
-            .split(/[\n;|,]+/)
-            .map((t) => t.trim())
-            .filter((t) => t.length > 0);
-      const defaultTips = [
-        'Tip 1: Voeg specifieke vereisten toe aan je vacature',
-        'Tip 2: Beschrijf de bedrijfscultuur en waarden',
-        'Tip 3: Vermeld het salaris of salarisrange',
-        'Tip 4: Specificeer thuiswerk mogelijkheden',
-      ];
-      const normalizedTips = [...parsedTips].slice(0, 4);
-      while (normalizedTips.length < 4) {
-        const nextTip = defaultTips[normalizedTips.length] ?? 'Tip';
-        normalizedTips.push(nextTip);
+      
+      // Process HTML content and filter out matching percentage line
+      let processedContent = payload.analysis_content;
+      
+      // Remove the first line if it starts with "## Matching percentage:"
+      const lines = processedContent.split('\n');
+      if (lines.length > 0 && lines[0] && lines[0].trim().startsWith('## Matching percentage:')) {
+        processedContent = lines.slice(1).join('\n').trim();
       }
+      
       // Convert score to number if it's a string (handle both "score" and "Score")
       let scoreNum: number | undefined;
       const rawScore = (payload as any).score || (payload as any).Score;
@@ -138,7 +123,7 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
         companyName: sanitizeString(payload.company_name),
         vacancyTitle: sanitizeString(payload.vacancy_title),
         idealCandidateImageUrl: payload.ideal_candidate_image_url,
-        tips: normalizedTips.map(sanitizeString),
+        analysisContent: processedContent,
         score: scoreNum,
         timestamp: new Date(),
         meta: payload.meta ? {
@@ -147,7 +132,7 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
           submittedAt: payload.meta.submitted_at,
         } : undefined,
       };
-      console.log(`Valid analysis received: ${result.companyName} - ${result.vacancyTitle} (tips=${normalizedTips.length}, score=${result.score})`);
+      console.log(`Valid analysis received: ${result.companyName} - ${result.vacancyTitle} (content length=${processedContent.length}, score=${result.score})`);
     } else {
       // Invalid payload - create fallback result with mock data
       console.warn('Webhook validation failed, creating fallback result:', validationResult.error.errors);
@@ -157,22 +142,41 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
       const fallbackCompany = sanitizeString(body.company_name || body.companyName || 'Onbekend Bedrijf');
       const fallbackTitle = sanitizeString(body.vacancy_title || body.vacancyTitle || body.job_title || 'Vacature');
       
-      // Try to parse tips and score from the invalid payload
-      const rawTips = body.tips;
-      let parsedTips: string[] = [];
-      if (rawTips) {
-        parsedTips = Array.isArray(rawTips)
-          ? (rawTips as unknown[])
-              .flatMap((item) =>
-                String(item)
-                  .split(/[\n;|,]+/)
-                  .map((t) => t.trim())
-              )
-              .filter((t) => t.length > 0)
-          : String(rawTips)
-              .split(/[\n;|,]+/)
-              .map((t) => t.trim())
-              .filter((t) => t.length > 0);
+      // Try to parse HTML content from the invalid payload
+      let fallbackContent = body.analysis_content || body.content || '';
+      
+      // Remove the first line if it starts with "## Matching percentage:"
+      if (fallbackContent) {
+        const lines = fallbackContent.split('\n');
+        if (lines.length > 0 && lines[0] && lines[0].trim().startsWith('## Matching percentage:')) {
+          fallbackContent = lines.slice(1).join('\n').trim();
+        }
+      }
+      
+      // If no content available, create default HTML content
+      if (!fallbackContent) {
+        fallbackContent = `
+          <p>De vacaturetekst voor ${fallbackTitle} bij ${fallbackCompany} heeft een goede basis, maar er zijn enkele verbeterpunten mogelijk.</p>
+          
+          <ul>
+            <li>
+              <h3>Specifieke vereisten toevoegen</h3>
+              <p>Voeg meer specifieke vereisten toe aan je vacature om de juiste kandidaten aan te trekken.</p>
+            </li>
+            <li>
+              <h3>Bedrijfscultuur beschrijven</h3>
+              <p>Beschrijf de bedrijfscultuur en waarden om kandidaten een beter beeld te geven van de werkomgeving.</p>
+            </li>
+            <li>
+              <h3>Salaris vermelden</h3>
+              <p>Vermeld het salaris of salarisrange om transparantie te bieden en geschikte kandidaten aan te trekken.</p>
+            </li>
+            <li>
+              <h3>Thuiswerk mogelijkheden</h3>
+              <p>Specificeer thuiswerk mogelijkheden om flexibiliteit te bieden en meer kandidaten aan te spreken.</p>
+            </li>
+          </ul>
+        `;
       }
       
       // Try to parse score from the invalid payload (handle both "score" and "Score")
@@ -185,24 +189,12 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
         }
       }
       
-      const defaultTips = [
-        'Tip 1: Voeg specifieke vereisten toe aan je vacature',
-        'Tip 2: Beschrijf de bedrijfscultuur en waarden',
-        'Tip 3: Vermeld het salaris of salarisrange',
-        'Tip 4: Specificeer thuiswerk mogelijkheden'
-      ];
-      const normalizedTips = [...parsedTips].slice(0, 4);
-      while (normalizedTips.length < 4) {
-        const nextTip = defaultTips[normalizedTips.length] ?? 'Tip';
-        normalizedTips.push(nextTip);
-      }
-      
       result = {
         id: generateAnalysisId(),
         companyName: fallbackCompany,
         vacancyTitle: fallbackTitle,
         idealCandidateImageUrl: 'https://via.placeholder.com/400x300/2563eb/ffffff?text=Ideal+Candidate',
-        tips: normalizedTips.map(sanitizeString),
+        analysisContent: fallbackContent,
         score: parsedScore,
         timestamp: new Date(),
         meta: {
@@ -211,7 +203,7 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
           submittedAt: new Date().toISOString(),
         },
       };
-      console.log(`Fallback result created: ${result.companyName} - ${result.vacancyTitle} (tips=${normalizedTips.length}, score=${result.score})`);
+      console.log(`Fallback result created: ${result.companyName} - ${result.vacancyTitle} (content length=${fallbackContent.length}, score=${result.score})`);
     }
 
     // Store result

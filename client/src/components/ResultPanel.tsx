@@ -5,7 +5,6 @@ import ScoreCard from './ScoreCard';
 
 interface ResultPanelProps {
   result: AnalysisResult;
-  displaySeconds: number;
   onComplete: () => void;
 }
 
@@ -119,53 +118,43 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
             <ScoreCard score={result.score || 0} />
           </motion.div>
 
-          {/* Tips Section - Single column for better screen filling */}
+          {/* Analysis Content Section - HTML styled content */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.8 }}
           >
-            <h3 className="text-xl font-bold text-brand-text mb-4 text-center">
-              🚀 Verbeterpunten voor je vacature
-            </h3>
-            
-            <div className="space-y-3">
-              {result.tips.map((tip, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 1 + index * 0.1 }}
-                  className="bg-white rounded-lg p-4 shadow-lg border-l-4 border-brand-accent"
-                >
-                  <div className="flex items-start space-x-3">
-                    <div className="flex-shrink-0 w-8 h-8 bg-brand-accent rounded-full flex items-center justify-center text-white font-bold text-sm">
-                      {index + 1}
-                    </div>
-                    <p className="text-gray-700 leading-relaxed text-sm">
-                      {tip.length > 150 ? `${tip.substring(0, 150)}...` : tip}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-            
-            {/* Back Button - Right under tips for better kiosk usability */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.2 }}
-              className="text-center mt-6"
-            >
-              <motion.button
-                onClick={onComplete}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-brand-accent hover:bg-brand-accent/90 text-white px-8 py-4 rounded-lg text-lg font-bold shadow-lg transition-colors duration-200"
+            <div className="bg-white rounded-2xl p-6 shadow-xl">
+              <h3 className="text-xl font-bold text-brand-text mb-6 text-center">
+                🚀 Analyse van je vacature
+              </h3>
+              
+              <div 
+                className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: result.analysisContent }}
+                style={{
+                  fontSize: '1rem',
+                  lineHeight: '1.6',
+                }}
+              />
+              
+              {/* Back Button - Right under analysis for better kiosk usability */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.2 }}
+                className="text-center mt-8"
               >
-                🏠 Terug naar QR code
-              </motion.button>
-            </motion.div>
+                <motion.button
+                  onClick={onComplete}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-brand-accent hover:bg-brand-accent/90 text-white px-8 py-4 rounded-lg text-lg font-bold shadow-lg transition-colors duration-200"
+                >
+                  🏠 Terug naar QR code
+                </motion.button>
+              </motion.div>
+            </div>
           </motion.div>
         </div>
 

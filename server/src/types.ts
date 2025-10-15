@@ -5,11 +5,8 @@ export const WebhookPayloadSchema = z.object({
   company_name: z.string().min(1, 'Company name is required'),
   vacancy_title: z.string().min(1, 'Vacancy title is required'),
   ideal_candidate_image_url: z.string().url('Invalid image URL'),
-  // Accept either an array of tips or a single string with separators (\n, ;, |)
-  tips: z.union([
-    z.array(z.string().min(1, 'Tip cannot be empty')).min(1, 'At least one tip'),
-    z.string().min(1, 'Tips string cannot be empty'),
-  ]),
+  // Accept HTML content for analysis results
+  analysis_content: z.string().min(1, 'Analysis content is required'),
   score: z.union([z.string(), z.number()]).optional(),
   Score: z.union([z.string(), z.number()]).optional(),
   meta: z.object({
@@ -27,7 +24,7 @@ export interface AnalysisResult {
   companyName: string;
   vacancyTitle: string;
   idealCandidateImageUrl: string;
-  tips: string[];
+  analysisContent: string; // HTML content for analysis results
   score?: number;
   timestamp: Date;
   meta?: {
