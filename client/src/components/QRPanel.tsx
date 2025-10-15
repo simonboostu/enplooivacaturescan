@@ -16,7 +16,7 @@ const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle, kioskSubtitl
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-brand-bg to-gray-50 px-12"
+      className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-brand-bg to-white px-12"
       style={{ minHeight: '1920px', minWidth: '1080px' }}
     >
       {/* Main Content - Optimized for vertical layout */}
@@ -41,7 +41,7 @@ const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle, kioskSubtitl
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.6 }}
-          className="text-3xl lg:text-4xl text-gray-600 mb-20 max-w-5xl mx-auto leading-relaxed"
+          className="text-3xl lg:text-4xl text-brand-text/80 mb-20 max-w-5xl mx-auto leading-relaxed"
         >
           {kioskSubtitle.split('\n').map((line, index) => (
             <React.Fragment key={index}>
@@ -80,7 +80,7 @@ const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle, kioskSubtitl
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.6 }}
-          className="text-3xl text-gray-500 mb-24"
+          className="text-3xl text-brand-text/70 mb-24"
         >
           <p className="font-semibold mb-4">📱 Scan met je telefoon</p>
           <p className="text-2xl">
@@ -104,7 +104,7 @@ const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle, kioskSubtitl
         
         {/* Social Proof - Larger with orange accents */}
         <div className="text-right">
-          <div className="text-2xl text-gray-500">
+          <div className="text-2xl text-brand-text/70">
             Al meer dan <span className="font-semibold text-brand-accent">10.000</span> vacatures geoptimaliseerd
           </div>
         </div>

@@ -26,7 +26,7 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.5 }}
-      className="h-screen bg-gradient-to-br from-brand-bg to-gray-50 p-8 overflow-hidden"
+      className="h-screen bg-gradient-to-br from-brand-bg to-white p-8 overflow-hidden"
       style={{ minHeight: '1920px', minWidth: '1080px' }}
     >
       <div className="h-full flex flex-col">
@@ -38,7 +38,7 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
           className="mb-8"
         >
           <div className="flex items-center justify-between mb-6">
-            <div className="text-xl text-gray-500">
+            <div className="text-xl text-brand-text/70">
               {formatTimestamp(result.timestamp)}
             </div>
             <motion.button

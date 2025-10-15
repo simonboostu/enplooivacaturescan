@@ -13,13 +13,13 @@ const ScoreCard: React.FC<ScoreCardProps> = ({ score }) => {
 
   const getScoreMessage = (score: number): string => {
     if (score >= 0 && score <= 30) {
-      return '🔴 Basic mainstream: weinig onderscheidend, trekt geen topkandidaten. (0% - 30%)';
+      return '🔴 Basic mainstream: weinig onderscheidend, trekt geen topkandidaten.';
     } else if (score > 30 && score <= 70) {
-      return '🟡 Kan beter: goede basis, maar weinig wow-factor. (31% - 70%)';
+      return '🟡 Kan beter: goede basis, maar weinig wow-factor.';
     } else if (score > 70 && score <= 100) {
-      return '🟢 Briljant & opvallend: klaar om de juiste kandidaten aan te trekken. (71% - 100%)';
+      return '🟢 Briljant & opvallend: klaar om de juiste kandidaten aan te trekken.';
     }
-    return '🟡 Kan beter: goede basis, maar weinig wow-factor. (31% - 70%)';
+    return '🟡 Kan beter: goede basis, maar weinig wow-factor.';
   };
 
   const getScoreColor = (score: number): string => {
@@ -45,7 +45,7 @@ const ScoreCard: React.FC<ScoreCardProps> = ({ score }) => {
       </h3>
       
       <div className="text-center">
-        <p className="text-base font-semibold text-gray-700 mb-3">
+        <p className="text-base font-semibold text-brand-text mb-3">
           Uw score:
         </p>
         <motion.div
@@ -61,7 +61,7 @@ const ScoreCard: React.FC<ScoreCardProps> = ({ score }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.4 }}
-          className="text-sm text-gray-600 leading-relaxed"
+          className="text-sm text-brand-text/80 leading-relaxed"
         >
           {getScoreMessage(displayScore)}
         </motion.p>
