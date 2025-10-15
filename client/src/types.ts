@@ -19,4 +19,5 @@ export interface AppConfig {
   typeformUrl: string;
   displaySeconds: number;
   kioskTitle: string;
+  kioskSubtitle: string;
 }

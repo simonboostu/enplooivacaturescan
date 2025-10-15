@@ -6,9 +6,10 @@ import EnplooiLogo from './EnplooiLogo';
 interface QRPanelProps {
   typeformUrl: string;
   kioskTitle: string;
+  kioskSubtitle: string;
 }
 
-const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle }) => {
+const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle, kioskSubtitle }) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -40,10 +41,14 @@ const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle }) => {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.6 }}
-          className="text-4xl lg:text-5xl text-gray-600 mb-20 max-w-4xl mx-auto leading-relaxed"
+          className="text-3xl lg:text-4xl text-gray-600 mb-20 max-w-5xl mx-auto leading-relaxed"
         >
-          Scan de QR, vul kort je vacature in, wij tonen hier meteen 4 tips. 
-          De volledige analyse ontvang je via e-mail.
+          {kioskSubtitle.split('\n').map((line, index) => (
+            <React.Fragment key={index}>
+              {line}
+              {index < kioskSubtitle.split('\n').length - 1 && <br />}
+            </React.Fragment>
+          ))}
         </motion.p>
         
         {/* QR Code - Much larger for visibility */}

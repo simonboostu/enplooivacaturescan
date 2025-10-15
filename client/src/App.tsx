@@ -19,6 +19,7 @@ const App: React.FC = () => {
     typeformUrl: 'https://form.typeform.com/to/example',
     displaySeconds: 15,
     kioskTitle: 'Gratis Vacaturescan',
+    kioskSubtitle: 'Scan de QR, vul kort je vacature in, wij tonen hier meteen 4 tips. De volledige analyse ontvang je via e-mail.',
   });
 
   // Initialize theme
@@ -38,6 +39,7 @@ const App: React.FC = () => {
             typeformUrl: serverConfig.typeformUrl,
             displaySeconds: serverConfig.displaySeconds,
             kioskTitle: serverConfig.kioskTitle,
+            kioskSubtitle: serverConfig.kioskSubtitle,
           });
         }
       } catch (error) {
@@ -292,6 +294,7 @@ const App: React.FC = () => {
             key="qr-panel"
             typeformUrl={config.typeformUrl}
             kioskTitle={config.kioskTitle}
+            kioskSubtitle={config.kioskSubtitle}
           />
         ) : currentResult ? (
           <ResultPanel

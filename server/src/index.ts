@@ -74,6 +74,7 @@ app.get('/api/config', (_req, res) => {
     typeformUrl: config.typeformUrl,
     displaySeconds: config.displaySeconds,
     kioskTitle: config.kioskTitle,
+    kioskSubtitle: config.kioskSubtitle,
     brandPrimary: config.brandPrimary,
     brandAccent: config.brandAccent,
     brandBg: config.brandBg,
