@@ -75,11 +75,11 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
                 <div className="lg:col-span-1 text-gray-600 text-base leading-relaxed">
                   <p className="mb-3">
-                    Op basis van je vacature hebben we een profiel gemaakt van de ideale kandidaat.
+                    Op basis van je vacature hebben we een visual gemaakt van de ideale kandidaat.
                   </p>
                   <div className="bg-brand-accent/10 rounded-lg p-3">
                     <p className="text-brand-accent font-medium text-xs">
-                      💡 Tip: Gebruik dit profiel om je vacaturetekst aan te passen en de juiste kandidaten aan te trekken.
+                      💡 Tip: Gebruik deze visual om je vacaturetekst aan te passen en de juiste kandidaten aan te trekken.
                     </p>
                   </div>
                 </div>
