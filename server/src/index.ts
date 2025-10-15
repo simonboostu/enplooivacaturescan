@@ -123,7 +123,7 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
         companyName: sanitizeString(payload.company_name),
         vacancyTitle: sanitizeString(payload.vacancy_title),
         idealCandidateImageUrl: payload.ideal_candidate_image_url,
-        analysisContent: processedContent,
+        analysisContent: processedContent, // Don't sanitize HTML content
         score: scoreNum,
         timestamp: new Date(),
         meta: payload.meta ? {
@@ -194,7 +194,7 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
         companyName: fallbackCompany,
         vacancyTitle: fallbackTitle,
         idealCandidateImageUrl: 'https://via.placeholder.com/400x300/2563eb/ffffff?text=Ideal+Candidate',
-        analysisContent: fallbackContent,
+        analysisContent: fallbackContent, // Don't sanitize HTML content
         score: parsedScore,
         timestamp: new Date(),
         meta: {

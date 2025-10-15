@@ -130,12 +130,8 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onComplete }) => {
               </h3>
               
               <div 
-                className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
+                className="analysis-content"
                 dangerouslySetInnerHTML={{ __html: result.analysisContent }}
-                style={{
-                  fontSize: '1rem',
-                  lineHeight: '1.6',
-                }}
               />
               
               {/* Back Button - Right under analysis for better kiosk usability */}

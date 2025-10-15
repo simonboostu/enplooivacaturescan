@@ -73,3 +73,42 @@ a:focus-visible {
   background-size: 200px 100%;
   animation: shimmer 1.5s infinite;
 }
+
+/* HTML content styling for analysis results */
+.analysis-content {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #374151;
+}
+
+.analysis-content p {
+  margin-bottom: 1rem;
+  color: #374151;
+}
+
+.analysis-content ul {
+  margin: 1rem 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.analysis-content li {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+  border-left: 4px solid var(--brand-accent);
+}
+
+.analysis-content h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--brand-accent);
+  margin-bottom: 0.5rem;
+  margin-top: 0;
+}
+
+.analysis-content li p {
+  margin-bottom: 0;
+  color: #6b7280;
+}
