@@ -10,6 +10,16 @@ import { validateToken, generateAnalysisId, sanitizeString } from './security';
 import { analysisStorage } from './storage';
 import { initializeSockets, emitNewAnalysis } from './sockets';
 
+/**
+ * Validate and potentially process image URLs
+ * For download URLs, we'll pass them through but add some metadata
+ */
+function processImageUrl(url: string): string {
+  // For now, we'll pass through the URL as-is
+  // In the future, we could add image proxying or validation here
+  return url;
+}
+
 const app = express();
 const httpServer = createServer(app);
 
@@ -103,9 +113,9 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
       // Accept content from either analysis_content or tips field
       let processedContent = payload.analysis_content || payload.tips || '';
       
-      // Remove the first line if it starts with "## Matching percentage:"
+      // Remove the first line if it starts with "##" (matching percentage or similar)
       const lines = processedContent.split('\n');
-      if (lines.length > 0 && lines[0] && lines[0].trim().startsWith('## Matching percentage:')) {
+      if (lines.length > 0 && lines[0] && lines[0].trim().startsWith('##')) {
         processedContent = lines.slice(1).join('\n').trim();
       }
       
@@ -123,7 +133,7 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
         id: generateAnalysisId(),
         companyName: sanitizeString(payload.company_name),
         vacancyTitle: sanitizeString(payload.vacancy_title),
-        idealCandidateImageUrl: payload.ideal_candidate_image_url,
+        idealCandidateImageUrl: processImageUrl(payload.ideal_candidate_image_url),
         analysisContent: processedContent, // Don't sanitize HTML content
         score: scoreNum,
         timestamp: new Date(),
@@ -146,10 +156,10 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
       // Try to parse HTML content from the invalid payload
       let fallbackContent = body.analysis_content || body.tips || body.content || '';
       
-      // Remove the first line if it starts with "## Matching percentage:"
+      // Remove the first line if it starts with "##" (matching percentage or similar)
       if (fallbackContent) {
         const lines = fallbackContent.split('\n');
-        if (lines.length > 0 && lines[0] && lines[0].trim().startsWith('## Matching percentage:')) {
+        if (lines.length > 0 && lines[0] && lines[0].trim().startsWith('##')) {
           fallbackContent = lines.slice(1).join('\n').trim();
         }
       }
@@ -194,7 +204,7 @@ app.post('/api/webhook/v1/result', webhookRateLimit, (req, res) => {
         id: generateAnalysisId(),
         companyName: fallbackCompany,
         vacancyTitle: fallbackTitle,
-        idealCandidateImageUrl: 'https://via.placeholder.com/400x300/2563eb/ffffff?text=Ideal+Candidate',
+        idealCandidateImageUrl: processImageUrl(body.ideal_candidate_image_url || 'https://via.placeholder.com/400x300/2563eb/ffffff?text=Ideal+Candidate'),
         analysisContent: fallbackContent, // Don't sanitize HTML content
         score: parsedScore,
         timestamp: new Date(),

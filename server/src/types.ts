@@ -4,7 +4,7 @@ import { z } from 'zod';
 export const WebhookPayloadSchema = z.object({
   company_name: z.string().min(1, 'Company name is required'),
   vacancy_title: z.string().min(1, 'Vacancy title is required'),
-  ideal_candidate_image_url: z.string().url('Invalid image URL'),
+  ideal_candidate_image_url: z.string().min(1, 'Image URL is required'),
   // Accept HTML content in either analysis_content or tips field (for backward compatibility)
   analysis_content: z.string().min(1, 'Analysis content is required').optional(),
   tips: z.string().min(1, 'Tips content is required').optional(),
