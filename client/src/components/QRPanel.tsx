@@ -19,14 +19,24 @@ const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle, kioskSubtitl
       className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-brand-bg to-white px-12"
       style={{ minHeight: '1920px', minWidth: '1080px' }}
     >
+      {/* Enplooi Logo - Top of page, larger and prominent */}
+      <motion.div
+        initial={{ y: -30, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.1, duration: 0.6 }}
+        className="mb-12"
+      >
+        <EnplooiLogo width={240} height={96} />
+      </motion.div>
+
       {/* Main Content - Optimized for vertical layout */}
       <div className="text-center max-w-5xl w-full">
-        {/* Title - Much larger for kiosk display */}
+        {/* Title - Smaller to make room for prominent logo */}
         <motion.h1
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-          className="text-6xl lg:text-7xl font-bold text-brand-text mb-8 leading-tight"
+          transition={{ delay: 0.3, duration: 0.6 }}
+          className="text-5xl lg:text-6xl font-bold text-brand-text mb-6 leading-tight"
         >
           {kioskTitle.split('\n').map((line, index) => (
             <React.Fragment key={index}>
@@ -36,12 +46,12 @@ const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle, kioskSubtitl
           ))}
         </motion.h1>
         
-        {/* Subtitle - Larger and more spaced */}
+        {/* Subtitle - Smaller to make room for prominent logo */}
         <motion.p
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="text-3xl lg:text-4xl text-brand-text/80 mb-20 max-w-5xl mx-auto leading-relaxed"
+          transition={{ delay: 0.5, duration: 0.6 }}
+          className="text-2xl lg:text-3xl text-brand-text/80 mb-16 max-w-5xl mx-auto leading-relaxed"
         >
           {kioskSubtitle.split('\n').map((line, index) => (
             <React.Fragment key={index}>
@@ -55,8 +65,8 @@ const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle, kioskSubtitl
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-          className="mb-20"
+          transition={{ delay: 0.7, duration: 0.8 }}
+          className="mb-16"
         >
           <div className="relative inline-block">
             {/* Pulsing border - thicker for kiosk */}
@@ -79,8 +89,8 @@ const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle, kioskSubtitl
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          className="text-3xl text-brand-text/70 mb-24"
+          transition={{ delay: 0.9, duration: 0.6 }}
+          className="text-2xl text-brand-text/70 mb-20"
         >
           <p className="font-semibold mb-4">📱 Scan met je telefoon</p>
           <p className="text-2xl">
@@ -90,23 +100,16 @@ const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle, kioskSubtitl
         </motion.div>
       </div>
       
-      {/* Footer - Larger and more prominent */}
+      {/* Footer - Centered social proof */}
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 1, duration: 0.6 }}
-        className="absolute bottom-16 left-0 right-0 flex items-center justify-between px-16"
+        transition={{ delay: 1.1, duration: 0.6 }}
+        className="absolute bottom-16 left-0 right-0 text-center px-16"
       >
-        {/* Enplooi Logo */}
-        <div className="flex items-center space-x-6">
-          <EnplooiLogo width={180} height={72} />
-        </div>
-        
-        {/* Social Proof - Larger with orange accents */}
-        <div className="text-right">
-          <div className="text-2xl text-brand-text/70">
-            Al meer dan <span className="font-semibold text-brand-accent">10.000</span> vacatures geoptimaliseerd
-          </div>
+        {/* Social Proof - Centered with orange accents */}
+        <div className="text-2xl text-brand-text/70">
+          Al meer dan <span className="font-semibold text-brand-accent">10.000</span> vacatures geoptimaliseerd
         </div>
       </motion.div>
     </motion.div>
