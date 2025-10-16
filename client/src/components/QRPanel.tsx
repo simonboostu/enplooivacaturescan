@@ -26,7 +26,7 @@ const QRPanel: React.FC<QRPanelProps> = ({ typeformUrl, kioskTitle, kioskSubtitl
         transition={{ delay: 0.1, duration: 0.6 }}
         className="mb-12"
       >
-        <EnplooiLogo width={240} height={96} />
+        <EnplooiLogo width={520} height={208} />
       </motion.div>
 
       {/* Main Content - Optimized for vertical layout */}
